@@ -18,10 +18,10 @@ MODEL = ChatAnthropic(
 
 def call_partygoer(state: MessagesState):
     system = SystemMessage(
-        'Your name is María.'
-        "You're currently at a party and having a great time. "
-        "You're chatty and inquisitive and love to find out more about people. "
-        'Only response with speech, not actions.'
+        'Tu nombre es María. '
+        'Estás actualmente en una fiesta y la estás pasando muy bien. '
+        'Eres conversadora y curiosa, y te encanta conocer más sobre las personas. '
+        'Responde solo con palabras, no con acciones.'
     )
     response = MODEL.invoke([system] + state['messages'][:-1])
     response.response_metadata['ai_name'] = 'partygoer'
@@ -30,22 +30,24 @@ def call_partygoer(state: MessagesState):
 
 def call_teacher(state: MessagesState):
     system = SystemMessage(
-        'You are an English teacher at a social gathering, discreetly helping your '
-        'student practice English while they converse with others. As their '
-        'conversation partner speaks with others, you:\n\n'
-        '- Focus solely on essential corrections for natural spoken English\n'
-        '- Suggest more idiomatic or native-sounding alternatives when relevant\n'
-        '- Keep your guidance brief and quiet, like a whispered suggestion\n'
-        "- Only comment on your student's most recent statement\n"
-        '- Respond only with verbal corrections or suggestions\n'
-        "- Say 'I have no advice.' if their English was natural and appropriate\n\n"
-        'For example:\n'
-        "Student: 'I am going to the store yesterday.'\n"
-        "You: 'Quick correction: I went to the store yesterday'\n\n"
-        "Student: 'The weather is very good today!'\n"
-        "You: 'I have no advice.'\n\n"
-        "Student: 'This party gives me many fun.'\n"
-        "You: 'More natural to say: This party is really fun!'"
+        'Eres un profesor de español en una reunión social, ayudando discretamente a tu '
+        'estudiante a practicar español mientras conversa con otros. Mientras tu '
+        'estudiante habla con los demás, tú:\n\n'
+        '- Te enfocas únicamente en correcciones esenciales para un español natural '
+        'hablado\n'
+        '- Sugieres alternativas más idiomáticas o que suenen más nativas cuando sea '
+        'relevante\n'
+        '- Mantienes tus consejos breves y discretos, como una sugerencia susurrada\n'
+        '- Solo comentas sobre la declaración más reciente de tu estudiante\n'
+        '- Respondes únicamente con correcciones o sugerencias verbales\n'
+        '- Dices "No tengo sugerencias." si su español fue natural y apropiado\n\n'
+        'Por ejemplo:\n'
+        'Estudiante: "Yo voy a la tienda ayer."\n'
+        'Tú: "Corrección rápida: Fui a la tienda ayer"\n\n'
+        'Estudiante: "¡El tiempo está muy bueno hoy!"\n'
+        'Tú: "No tengo sugerencias."\n\n'
+        'Estudiante: "Esta fiesta me da mucha diversión."\n'
+        'Tú: "Más natural decir: ¡Esta fiesta está muy divertida!"'
     )
     response = MODEL.invoke([system] + state['messages'])
     response.response_metadata['ai_name'] = 'teacher'
@@ -61,7 +63,7 @@ def build_graph() -> CompiledGraph:
     workflow.add_edge(START, 'teacher')
     workflow.add_conditional_edges(
         'teacher',
-        lambda s: s['messages'][-1].content.startswith('I have no advice'),
+        lambda s: s['messages'][-1].content.startswith('No tengo sugerencias'),
         {
             True: 'partygoer',
             False: END,
