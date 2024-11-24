@@ -1,12 +1,17 @@
 [project]
 name = "fiesta"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.0.0"
+description = "Practise your Spanish by taking an AI teacher to an AI party."
+authors = [
+    {name = "Will Langdale", email = "willdon@gmail.com"}
+]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "langchain-anthropic>=0.3.0",
     "langchain-community>=0.3.8",
     "langgraph>=0.2.53",
+    "python-dotenv>=1.0.1",
     "python-fasthtml>=0.10.0",
 ]
 
@@ -16,6 +21,10 @@ dev = [
     "pytest>=8.3.3",
     "ruff>=0.8.0",
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 88
@@ -33,6 +42,12 @@ select = [
     "W",
     "RUF",
 ]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
 
 [tool.poe.tasks]
 _check = "ruff check . --fix"
