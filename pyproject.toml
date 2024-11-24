@@ -1,0 +1,43 @@
+[project]
+name = "fiesta"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain-community>=0.3.8",
+    "langgraph>=0.2.53",
+    "python-fasthtml>=0.10.0",
+]
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.31.0",
+    "pytest>=8.3.3",
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "A",
+    "B",
+    "N",
+    "W",
+    "RUF",
+]
+
+[tool.poe.tasks]
+_check = "ruff check . --fix"
+_format = "ruff format"
+
+[tool.poe.tasks.format]
+sequence = ["_check", "_format"]
+help = "Run code formatting checks and fixes with ruff."
