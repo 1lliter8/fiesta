@@ -38,6 +38,10 @@ select = [
 _check = "ruff check . --fix"
 _format = "ruff format"
 
+[tool.poe.tasks.run]
+cmd = "uv run python src/fiesta/main.py"
+help = "Run the FastHTML development server"
+
 [tool.poe.tasks.format]
 sequence = ["_check", "_format"]
 help = "Run code formatting checks and fixes with ruff."
